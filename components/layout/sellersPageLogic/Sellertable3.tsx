@@ -1,32 +1,21 @@
-// components/SellersTable.tsx
+//SellersTable.tsx
 //"use client";
 
 import React, { useMemo } from "react";
-import {
-  ColumnDef,
-  flexRender,
-  useReactTable,
-  getCoreRowModel,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableCaption,
-  TableHead,
-  TableHeader,
-  TableRow,
+import { ColumnDef, flexRender, useReactTable, getCoreRowModel,} from "@tanstack/react-table";
+import { Table, TableBody, TableCell, TableCaption, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 
 interface Seller {
   id: string;
-  locations: {
-    LocName: string;
-  };
+  locations: { LocName: string; };
   Price: number;
   Name: string;
   "Shop Address": string;
   "Phone Num": string;
+  Company_id?: string; // Keep this if you still need the ID elsewhere
+  company?: { Company_name: string; };
+  Locality:string;
 }
 
 interface SellersTableProps {
@@ -42,6 +31,10 @@ const SellersTable: React.FC<SellersTableProps> = ({ sellers }) => {
         cell: info => info.getValue() as string,
       },
       {
+        accessorKey: "Locality",
+        header: "Locality",
+      },
+      {
         accessorKey: "Price",
         header: "Price (₹)",
       },
@@ -49,6 +42,11 @@ const SellersTable: React.FC<SellersTableProps> = ({ sellers }) => {
         accessorKey: "Name",
         header: "Seller Name",
       },
+    //   {
+    //     accessorKey: "company.Company_name",
+    //     header: "Company Name",
+    //     cell: info => info.getValue() as string,
+    //   },
       {
         accessorKey: "Shop Address",
         header: "Shop Address",
@@ -57,6 +55,11 @@ const SellersTable: React.FC<SellersTableProps> = ({ sellers }) => {
         accessorKey: "Phone Num",
         header: "Phone Number",
       },
+      // Optional: Uncomment if you still want to display the Company ID
+      // {
+      //   accessorKey: "Company_id",
+      //   header: "Company ID",
+      // },
     ],
     []
   );

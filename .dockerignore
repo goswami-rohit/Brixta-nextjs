@@ -1,11 +1,23 @@
+# Node modules and debug logs
 node_modules
 npm-debug.log
-.dockerignore
-.git
-.gitignore
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Local development env files
 .env.local
 .env.development
+.env.test
+
+
+# Build and editor files
+.dockerignore
+.vscode
 *.md
 *.log
-.vscode
-next.config.js
+
+# Git files
+.git
+.gitignore
+

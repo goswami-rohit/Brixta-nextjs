@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Head from 'next/head';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "BRIXTA By MyCoco",
   description: "BRIXTA By MyCoco is here! Regular Price Updates! Bricks|Cement|TMT Bars| and More!",
   icons: {
-    icon: "/B.ico",
+    icon: "/favicon.ico",
   }
 };
 
@@ -29,6 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <Head>
+         <meta property="og:site_name" content="Brixta by Mycoco" />
+         <meta property="og:type" content="website" />
+         <meta property="og:url" content="https://mycoco.site/" />
+         <meta property="og:image" content="/Brixta_prev_img.png" />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased
           min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-600 to-blue-900 

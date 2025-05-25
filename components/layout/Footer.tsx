@@ -1,20 +1,19 @@
-import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
-import * as React from "react"
+import {  FaWhatsapp, FaTelegram } from "react-icons/fa";
 
 
 const sections = [
   {
     title: "Contact",
     links: [
-      { name: "rehaz.a28@gmail.com", href: "rehaz.a28@gmail.com" },
-      { name: "rohit.second44@gmail.com", href: "rohit.second44@gmail.com" },
+      { name: "Send Us An Email", href: "mailto:brixtamail@gmail.com" },
+      { name: "WhatsApp Group", href: "#" },
     ],
   },
   {
     title: "Company",
     links: [
       { name: "About", href: "/about" },
-      { name: "Advertise With Us", href: "#" },
+      //{ name: "Advertise With Us", href: "#" },
       { name: "Privacy", href: "/privacypolicy" },
       { name: "Terms & Conditions", href: "/termsconditions" }
     ],
@@ -45,11 +44,14 @@ export default function Footer() {
               <a href="#"><FaWhatsapp className="size-6" /></a>
             </li>
             <li className="hover:text-primary">
+              <a href="#"><FaTelegram className="size-6" /></a>
+            </li>
+            {/* <li className="hover:text-primary">
               <a href="#"><FaInstagram className="size-6" /></a>
-            </li>
-            <li className="hover:text-primary">
+            </li> */}
+            {/* <li className="hover:text-primary">
               <a href="#"><FaFacebook className="size-6" /></a>
-            </li>
+            </li> */}
           </ul>
         </div>
 

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import * as React from "react";
 import Link from "next/link";
@@ -50,12 +50,12 @@ export function Header() {
           >
             Home
           </Link>
-          <Link
+          {/* <Link
             href="/sellers"
             className="px-4 py-2 rounded-xl border border-blue-500 shadow-[0_0_10px_2px_rgba(59,130,246,0.5)] transition hover:shadow-[0_0_12px_4px_rgba(59,130,246,0.8)]"
           >
             Sellers
-          </Link>
+          </Link> */}
           <Link
             href="#footer"
             className="px-4 py-2 rounded-xl border border-blue-500 shadow-[0_0_10px_2px_rgba(59,130,246,0.5)] transition hover:shadow-[0_0_12px_4px_rgba(59,130,246,0.8)]"

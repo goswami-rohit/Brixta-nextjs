@@ -1,33 +1,41 @@
-# Use official Node 20 image
-FROM node:20.19-alpine AS base
+# --- Stage 1: Build the Next.js application ---
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copy package.json and lock file for dependency caching
+COPY package.json package-lock.json* ./
+RUN npm install --frozen-lockfile
+
+# Install dependencies
+#RUN ci
+
+# --- Stage 2: Create the minimal runtime image ---
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
-COPY package.json package-lock.json* ./
-RUN npm ci --legacy-peer-deps
-
-# Copy all files
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the Next.js app
 RUN npm run build
 
-# Use a smaller base image for production
-FROM node:20.19-alpine AS runner
-
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
 
-# Copy built app and node_modules from build stage
-COPY --from=base /app/public ./public
-COPY --from=base /app/.next ./.next
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/package.json ./package.json
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
-# Expose port
+
+# Automatically leverage output traces to reduce image size 
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+
 EXPOSE 3000
+ENV PORT=3000
 
-# Start the app
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

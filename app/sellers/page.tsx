@@ -1,12 +1,13 @@
 import React from 'react';
 
-import LeadsPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic';
+//import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic2';
+import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic3';
 
 export default function Leads(){
 
   return(<>
   <div>
-      <LeadsPageContent/>
+      <SellersPageContent/>
     </div>
   
 </>);

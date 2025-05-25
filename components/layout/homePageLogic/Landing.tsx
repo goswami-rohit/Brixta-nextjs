@@ -15,31 +15,21 @@ export default function HeroSection() {
             <p className="mt-1 text-left text-lg text-muted-foreground normal-case">
               by <span className="font-semibold text-blue-200 text-xl">My Coco</span>
             </p>
-            <p className="mt-6 text-lg text-muted-foreground text-left max-w-md">
-              Real-time construction material price updates.
+          </div>
+
+          {/* Right Column: Description Text */}
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+              
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+                {' '}Price Tracker
+              </span>
+            </h2>
+            <p className="mt-4 text-lg max-w-md text-slate-300">
+              Track live prices for locally available TMT bars and cement, updated in real-time.
             </p>
           </div>
 
-          {/* Right Column: Button Section */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <p className="text-lg sm:text-xl font-normal text-white leading-relaxed">
-              Fill out a{/* <br className="hidden sm:block" /> */}
-              <span className="text-yellow-600"> GOOGLE FORM </span><br className="hidden sm:block" />
-              and List your shop/business with us
-            </p>
-            <a
-              href="https://forms.gle/yourGoogleFormId"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4" // Add margin-top for better spacing
-            >
-              <button
-                className="flex items-center text-center gap-2 bg-black text-white border border-yellow-500 shadow-[0_0_12px_2px_rgba(30,64,175,0.4)] hover:shadow-[0_0_18px_3px_rgba(30,64,175,0.3)] transition-all duration-300
-              px-6 py-3 rounded-full text-base font-semibold">
-                Join Now
-              </button>
-            </a>
-          </div>
         </div>
       </div>
     </section>
