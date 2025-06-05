@@ -98,7 +98,7 @@ export default function TMTBarPriceChart({ selectedCity, selectedCompanyId, sele
   const latestPriceText = latestPriceTextParts.join(" ");
 
   return (
-    <Card>
+    <Card className="flex w-full sm:w-full md:w-4/5 lg:w-full">
       <CardHeader className="flex items-center justify-between space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col lg:text-4xl justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle>{chartTitle}</CardTitle>

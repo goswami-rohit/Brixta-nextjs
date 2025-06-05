@@ -17,10 +17,24 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BRIXTA By MyCoco",
-  description: "BRIXTA By MyCoco is here! Regular Price Updates! Bricks|Cement|TMT Bars| and More!",
+  description: "BRIXTA By MyCoco is here! Regular Price Updates! Cement|TMT Bars| and More!",
   icons: {
     icon: "/favicon.ico",
-  }
+  },
+  openGraph: {
+    siteName: "Brixta By Mycoco",
+    type: "website",
+    description: "Brixta is your own easy & handy price tracker for TMT Bars and Cement.Stay upto date with Brixta's latest prices and make informed decisions when buying TMT and Cement!",
+    url: "https://mycoco.site/",
+    images: [
+      {
+        url: "https://mycoco.site/brixta_img.webp",
+        width: 1200, // Add recommended dimensions
+        height: 630,
+        alt: "Brixta Preview Image", // Add alt text for accessibility
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -33,8 +47,13 @@ export default function RootLayout({
       <Head>
          <meta property="og:site_name" content="Brixta by Mycoco" />
          <meta property="og:type" content="website" />
+         <meta
+          property="og:description"
+          content="Brixta is your own easy & handy price tracker for TMT Bars and Cement.
+          Stay upto date with Brixta's latest prices and make informed decisions when buying TMT and Cement!"
+        />
          <meta property="og:url" content="https://mycoco.site/" />
-         <meta property="og:image" content="/Brixta_prev_img.png" />
+         <meta property="og:image" content="/brixta_img.webp" />
       </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased

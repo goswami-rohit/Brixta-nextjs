@@ -94,11 +94,11 @@ export function Header() {
                 Home
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/sellers" className="block hover:text-cyan-300 transition-colors duration-200">
                 Sellers
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="#footer" className="block hover:text-cyan-300 transition-colors duration-200">
                 Contact

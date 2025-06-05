@@ -1,21 +1,12 @@
-//import ChartsSection from "@/components/layout/homePageLogic/ChartSection2";
-import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic3';
+import ChartsSection from "@/components/layout/homePageLogic/ChartSection2";
+//import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic3';
 import HeroSection from "@/components/layout/homePageLogic/Landing";
-import Head from "next/head";
+import TelegramChat from "@/components/chat/TelegramChat3";
 //import Link from "next/link";
 //import { FaArrowRight } from "react-icons/fa";
 
 export default function Home() {
   return (<>
-    <Head>
-      <title>MyCoco - Delicious Homemade Chocolates</title>
-        <meta property="og:title" content="Brixta-Mycoco" />
-        <meta
-          property="og:description"
-          content="Brixta is your own easy & handy price tracker for TMT Bars and Cement.
-          Stay upto date with Brixta's latest prices and make informed decisions when buying TMT and Cement!"
-        />
-    </Head>
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         {/* Hero Section with margin below */}
@@ -24,7 +15,7 @@ export default function Home() {
         </div>
 
         {/* Stylized Divider and Charts Section */}
-        <div className="relative px-4 sm:px-8">
+        <div className="relative sm:px-4">
           {/* Glowing border on top and fading side borders */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-blue-500/70 shadow-[0_0_10px_2px_rgba(59,130,246,0.4)] rounded-t-full" />
           <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-blue-500 to-transparent rounded-full" />
@@ -32,12 +23,25 @@ export default function Home() {
 
           {/* Chart section content */}
           <div className="relative z-10 pt-8 sm:pt-12 pb-16 sm:pb-22">
-            {/* <ChartsSection /> */}
-             <SellersPageContent/>
+            <ChartsSection />
+            {/* <SellersPageContent/>*/}
+          </div>
+
+          {/*Chat Window*/}
+          <div className="flex flex-col items-center h-screen p-4 md:flex-row md:justify-end md:items-center md:p-2">
+            <div className="flex-1 p-2 mb-4 md:mb-0"> 
+              <h1 className="text-3xl font-bold text-white mb-4 text-center md:text-left">Looking For Something More?</h1>
+              <p className="text-lg text-gray-300 text-center md:text-left">
+                Find TMT & Cement Rates on your fingertips. Use CemTemBot now!   
+              </p>
+            </div>
+            <div className="flex flex-col mb-4 w-full md:w-[800px]"> 
+              <TelegramChat />
+            </div>
           </div>
 
           {/*Google Form Btn */}
-          <div className="flex flex-col items-center text-center mb-14">
+          {/* <div className="flex flex-col items-center text-center mb-14">
             <p className="text-lg sm:text-xl font-normal text-white leading-relaxed">
               Fill out a
               <span className="text-yellow-600"> GOOGLE FORM </span><br className="hidden sm:block" />
@@ -47,7 +51,7 @@ export default function Home() {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfbTioMBSBeHiUGoIFtrkHefPwQUqynyfvH6IGW2oH4ImWPOw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4" 
+              className="mt-4"
             >
               <button
                 className="flex items-center text-center gap-2 bg-black text-white border border-yellow-500 shadow-[0_0_12px_2px_rgba(30,64,175,0.4)] hover:shadow-[0_0_18px_3px_rgba(30,64,175,0.3)] transition-all duration-300
@@ -55,19 +59,19 @@ export default function Home() {
                 Join Now
               </button>
             </a>
-          </div>
+          </div> */}
 
           <div className="w-full bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 
-          shadow-md px-6 sm:px-10 py-2 text-sm sm:text-base text-white leading-relaxed">
+          shadow-md px-6 sm:px-10 py-2 mt-18 text-sm sm:text-base text-white leading-relaxed">
             <h3 className="text-center text-2xl font-bold mb-4">Measurement Units</h3>
             <p>
-              <span className="text-lg font-semibold block">How We Measure/Price Our Materials ?</span><br/>
+              <span className="text-lg font-semibold block">How We Measure/Price Our Materials ?</span><br />
               At Brixta, we adhere to market-standard measurements for all our materials. Please refer to the unit costs below:</p>
-              {/* <li>Bricks- per unit = 1 single brick</li>
+            {/* <li>Bricks- per unit = 1 single brick</li>
               <li>Sand- per unit = 1 cft</li>
               <li>Stone- per unit = 1 cft</li> */}
-              <li>Cement- per unit = 1 bag (50kg)</li>
-              <li>TMT- per unit/per mm = 1 rod/bar </li>
+            <li>Cement- per unit = 1 bag (50kg)</li>
+            <li>TMT- per unit/per mm = 1 rod/bar </li>
           </div>
 
           {/*<div className=" mb-22 mt-12 w-full flex flex-col items-center gap-4 px-4 sm:px-8 text-center">
@@ -85,7 +89,7 @@ export default function Home() {
             </div> 
           </div>*/}
 
-          
+
 
         </div>
       </div>
