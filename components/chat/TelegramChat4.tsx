@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import Image from "next/image";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCheckCircle, FaClock } from "react-icons/fa"; // 🆕 ADD ICONS
 import { v4 as uuidv4 } from "uuid";
 
 interface BotReplyData {
@@ -10,17 +10,36 @@ interface BotReplyData {
   message: string;
 }
 
+// 🆕 ADD: Message type interface
+interface ChatMessage {
+  text: string;
+  from: "user" | "bot";
+  timestamp?: Date;
+  isQuote?: boolean; // 🆕 NEW: Flag for vendor quotes
+}
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
 
 export default function TelegramChat() {
-  const [messages, setMessages] = useState<{ text: string; from: "user" | "bot" }[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]); // 🆕 UPDATED TYPE
   const [input, setInput] = useState("");
   const [chatStarted, setChatStarted] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [pendingInquiry, setPendingInquiry] = useState<string | null>(null); // 🆕 NEW: Track pending inquiry
   
-  const socketRef = useRef<any>(null);
+  const socketRef = useRef<Socket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null); // 🆕 NEW: Auto-scroll ref
+
+  // 🆕 NEW: Auto-scroll to bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   // Setup socket connection and session
   useEffect(() => {
@@ -44,20 +63,44 @@ export default function TelegramChat() {
       socket.emit("join-session", id);
     });
 
-    socket.on('connect_error', (error: any) => {
+    socket.on('connect_error', (error: Error) => {
       console.error('❌ Socket connection error:', error);
       setIsConnected(false);
     });
 
-    socket.on('disconnect', (reason: any) => {
+    socket.on('disconnect', (reason: string) => {
       console.log('🔌 Socket disconnected:', reason);
       setIsConnected(false);
     });
 
-    socket.on("bot-reply", (data: BotReplyData) => {
+    socket.on("bot-message", (data: BotReplyData) => {
       console.log('🤖 Bot reply received:', data);
       setIsTyping(false);
-      setMessages((prev) => [...prev, { text: data.message, from: "bot" }]);
+      
+      // 🆕 NEW: Check if this is a vendor quote
+      const isQuote = data.message.includes('**New Quote Received!**') || 
+                     data.message.includes('📊') || 
+                     data.message.includes('💰 **Rate**');
+      
+      // 🆕 NEW: Clear pending inquiry when quote received
+      if (isQuote) {
+        setPendingInquiry(null);
+      }
+      
+      // 🆕 NEW: Set pending inquiry when inquiry is created
+      if (data.message.includes('Your inquiry has been created with ID:')) {
+        const inquiryMatch = data.message.match(/ID:\s*([^\n\s]+)/);
+        if (inquiryMatch) {
+          setPendingInquiry(inquiryMatch[1]);
+        }
+      }
+      
+      setMessages((prev) => [...prev, { 
+        text: data.message, 
+        from: "bot", 
+        timestamp: new Date(),
+        isQuote // 🆕 NEW: Mark quote messages
+      }]);
     });
 
     // Add typing indicator
@@ -69,7 +112,7 @@ export default function TelegramChat() {
       socket.off("connect");
       socket.off("connect_error");
       socket.off("disconnect");
-      socket.off("bot-reply");
+      socket.off("bot-message");
       socket.off("bot-typing");
       socket.disconnect();
     };
@@ -77,12 +120,12 @@ export default function TelegramChat() {
 
   const handleStartChat = () => {
     setChatStarted(true);
-    setMessages([{ text: "/start", from: "user" }]);
+    setMessages([{ text: "/start", from: "user", timestamp: new Date() }]);
     
     // Send /start message to backend
     if (socketRef.current && isConnected) {
       setIsTyping(true);
-      socketRef.current.emit("message", {
+      socketRef.current.emit("send-message", {
         sessionId,
         message: "/start",
       });
@@ -95,15 +138,21 @@ export default function TelegramChat() {
     const userMessage = input.trim();
 
     // Add to UI immediately
-    setMessages((prev) => [...prev, { text: userMessage, from: "user" }]);
+    setMessages((prev) => [...prev, { 
+      text: userMessage, 
+      from: "user", 
+      timestamp: new Date()
+    }]);
     setInput("");
     setIsTyping(true);
 
     // Send to backend via socket
-    socketRef.current.emit("message", {
-      sessionId,
-      message: userMessage,
-    });
+    if (socketRef.current) {
+      socketRef.current.emit("send-message", {
+        sessionId,
+        message: userMessage,
+      });
+    }
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -114,7 +163,7 @@ export default function TelegramChat() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto h-[600px] md:h-[600px] sm:h-[400px] mb-10 sm:mb-8 flex flex-col border rounded-lg shadow-lg bg-gray-800 shadow-cyan-400/10">
+    <div className="w-full max-w-4xl mx-auto h-[600px] md:h-[600px] sm:h-[500px] mb-4 sm:mb-8 flex flex-col border rounded-lg shadow-lg bg-gray-800 shadow-cyan-400/10">
       {/* Top Bar */}
       <div className="flex items-center p-3 sm:p-4 border-b border-gray-600 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-t-lg">
         <Image
@@ -127,7 +176,9 @@ export default function TelegramChat() {
         <div className="flex-grow">
           <div className="font-bold text-lg sm:text-xl">CemTemBot</div>
           <div className="text-xs sm:text-sm text-gray-200 opacity-90">
-            {isTyping ? "Bot is typing..." : "by My Coco"}
+            {isTyping ? "Bot is typing..." : 
+             pendingInquiry ? `Waiting for quotes (${pendingInquiry})` : // 🆕 NEW: Show pending inquiry
+             "by My Coco"}
           </div>
         </div>
         {/* Connection Status */}
@@ -149,7 +200,7 @@ export default function TelegramChat() {
               Welcome to CemTemBot! Get real-time pricing for Cement and TMT bars.
             </div>
             <div className="text-xs sm:text-sm text-gray-400">
-              Click "Start Chat" to begin your inquiry.
+              Click &quot;Start Chat&quot; to begin your inquiry.
             </div>
           </div>
         )}
@@ -160,15 +211,26 @@ export default function TelegramChat() {
               className={`max-w-[85%] sm:max-w-[75%] p-2 sm:p-3 rounded-2xl shadow-sm ${
                 msg.from === "user"
                   ? "bg-blue-600 text-white rounded-br-md"
-                  : "bg-gray-500 text-white border border-gray-200 rounded-bl-md"
+                  : msg.isQuote // 🆕 NEW: Special styling for quotes
+                    ? "bg-green-600 text-white border-2 border-green-400 rounded-bl-md shadow-lg"
+                    : "bg-gray-500 text-white border border-gray-200 rounded-bl-md"
               }`}
             >
-              <small className={`block mb-1 text-xs font-medium ${
-                msg.from === "user" ? "text-blue-100" : "text-gray-300"
+              <small className={`flex items-center gap-1 mb-1 text-xs font-medium ${
+                msg.from === "user" ? "text-blue-100" : 
+                msg.isQuote ? "text-green-100" : "text-gray-300" // 🆕 NEW: Quote styling
               }`}>
                 {msg.from === "user" ? "You" : "CemTemBot"}
+                {msg.isQuote && <FaCheckCircle className="text-green-200" />} {/* 🆕 NEW: Quote icon */}
+                {pendingInquiry && msg.text.includes(pendingInquiry) && <FaClock className="text-yellow-200" />} {/* 🆕 NEW: Pending icon */}
               </small>
               <div className="whitespace-pre-wrap leading-relaxed text-sm sm:text-base">{msg.text}</div>
+              {/* 🆕 NEW: Timestamp for quotes */}
+              {msg.isQuote && msg.timestamp && (
+                <div className="text-xs text-green-200 mt-1">
+                  Quote received at {msg.timestamp.toLocaleTimeString()}
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -185,11 +247,24 @@ export default function TelegramChat() {
             </div>
           </div>
         )}
+        
+        {/* 🆕 NEW: Auto-scroll anchor */}
+        <div ref={messagesEndRef} />
       </div>
+
+      {/* 🆕 NEW: Pending Inquiry Status */}
+      {pendingInquiry && (
+        <div className="px-3 sm:px-4 py-2 bg-yellow-100 border-t border-yellow-200 text-yellow-800 text-xs sm:text-sm">
+          <div className="flex items-center gap-2">
+            <FaClock className="animate-spin" />
+            <span>Waiting for vendor quotes for inquiry: {pendingInquiry}</span>
+          </div>
+        </div>
+      )}
 
       {/* Input Area */}
       {chatStarted ? (
-        <div className="p-3 sm:p-4 border-t border-cyan-600 bg-gray-700">
+        <div className="p-3 sm:p-4 border-t border-cyan-600 bg-gray-700 rounded-b-lg">
           <div className="flex space-x-2 sm:space-x-3">
             <textarea
               className="flex-grow border border-gray-300 bg-white text-gray-900 rounded-xl p-2 sm:p-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm sm:text-base"
@@ -227,8 +302,9 @@ export default function TelegramChat() {
       
       {/* Debug Info (only in development) */}
       {process.env.NODE_ENV === 'development' && (
-        <div className="text-xs text-blue-300 p-2 border-t bg-gray-700 rounded-b-lg">
+        <div className="text-xs text-gray-500 p-2 border-t bg-gray-100 rounded-b-lg">
           Session: {sessionId.substring(0, 8)}... | Connected: {isConnected ? '✅' : '❌'} | Backend: {BACKEND_URL}
+          {pendingInquiry && ` | Pending: ${pendingInquiry}`}
         </div>
       )}
     </div>

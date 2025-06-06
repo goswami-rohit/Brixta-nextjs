@@ -1,7 +1,7 @@
 import ChartsSection from "@/components/layout/homePageLogic/ChartSection2";
 //import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic3';
 import HeroSection from "@/components/layout/homePageLogic/Landing";
-import TelegramChat from "@/components/chat/TelegramChat3";
+import TelegramChat from "@/components/chat/TelegramChat4";
 //import Link from "next/link";
 //import { FaArrowRight } from "react-icons/fa";
 
