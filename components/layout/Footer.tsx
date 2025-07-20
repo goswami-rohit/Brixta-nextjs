@@ -6,7 +6,8 @@ const sections = [
     title: "Contact",
     links: [
       { name: "Send Us An Email", href: "mailto:brixtamail@gmail.com" },
-      { name: "WhatsApp Group", href: "#" },
+      { name: "WhatsApp Group", href: "https://chat.whatsapp.com/GX2trHxZ6lz3rtHs8tgg7n" },
+      { name: "Telegram Group", href: "https://t.me/+N6Ywfnh2Chs3YzQ1" },
     ],
   },
   {
@@ -41,10 +42,14 @@ export default function Footer() {
 
           <ul className="flex space-x-6 text-muted-foreground">
             <li className="hover:text-primary">
-              <a href="#"><FaWhatsapp className="size-6" /></a>
+              <a target="blank"
+               rel="noopener noreferrer" 
+               href="https://chat.whatsapp.com/GX2trHxZ6lz3rtHs8tgg7n"><FaWhatsapp className="size-6" /></a>
             </li>
             <li className="hover:text-primary">
-              <a href="#"><FaTelegram className="size-6" /></a>
+              <a target="blank"
+              rel="noopener noreferrer" 
+              href="https://t.me/+N6Ywfnh2Chs3YzQ1"><FaTelegram className="size-6" /></a>
             </li>
             {/* <li className="hover:text-primary">
               <a href="#"><FaInstagram className="size-6" /></a>

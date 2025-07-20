@@ -1,8 +1,7 @@
 import ChartsSection from "@/components/layout/homePageLogic/ChartSection2";
 //import SellersPageContent from '@/components/layout/sellersPageLogic/TableSelectLogic3';
 import HeroSection from "@/components/layout/homePageLogic/Landing";
-import TelegramChat from "@/components/chat/TelegramChat4";
-//import Link from "next/link";
+import Link from "next/link";
 //import { FaArrowRight } from "react-icons/fa";
 
 export default function Home() {
@@ -27,18 +26,64 @@ export default function Home() {
             {/* <SellersPageContent/>*/}
           </div>
 
-          {/*Chat Window*/}
-          <div className="flex flex-col items-center h-screen p-4 md:flex-row md:justify-end md:items-center md:p-2">
-            <div className="flex-1 p-2 mb-4 md:mb-0"> 
-              <h1 className="text-3xl font-bold text-white mb-4 text-center md:text-left">Looking For Something More?</h1>
-              <p className="text-lg text-gray-300 text-center md:text-left">
-                Find TMT & Cement Rates on your fingertips. Use CemTemBot now!   
+          {/* Chat Window */}
+          <div className="flex flex-col items-center p-4 md:grid md:grid-cols-2 md:gap-12 md:items-center">
+            {/* Left Section (Text) */}
+            <div className="p-2 mb-4 text-center md:mb-0 md:text-left">
+              <h1 className="text-3xl font-bold text-white mb-4">
+                What is CemTemBot and How to Use it?
+              </h1>
+              <p className="text-lg text-gray-300">
+                CemTemBot is a simple yet fast chat bot to inquire about CEMENT or TMT Bars in your area.
+                Check out the video to see a demo on the bot or simply click on the button below to get started.<br />
+                <span className="text-blue-300">Also checkout @cemtembot at
+                  <Link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://t.me/cemtembot"
+                    className="text-blue-500 ml-1">
+                    Telegram App
+                  </Link>
+                </span>
               </p>
             </div>
-            <div className="flex flex-col mb-4 w-full md:w-[800px]"> 
-              <TelegramChat />
+
+            {/* Right Section (Video) */}
+            <div className="flex flex-col items-center mb-4 w-full md:mb-0">
+              <div className="w-full aspect-video bg-gray-600 rounded-lg shadow-md">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/YM41sbJdAMA"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded-lg shadow-md"
+                ></iframe>
+              </div>
+            </div>
+
+            {/* Button below */}
+            <div className="w-full flex justify-center mt-4 md:col-span-2">
+              <div className="flex flex-col items-center">
+                <div
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg cursor-pointer w-fit"
+                >
+                  <Link
+                    href="/chatwindow"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full h-full text-center no-underline"
+                  >
+                    Chat With CemTemBot
+                  </Link>
+                </div>
+                <p className="text-gray-400 text-sm mt-2">Opens In New Tab</p>
+              </div>
             </div>
           </div>
+
 
           {/*Google Form Btn */}
           {/* <div className="flex flex-col items-center text-center mb-14">

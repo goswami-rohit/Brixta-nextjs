@@ -28,16 +28,16 @@ export function Header() {
     >
       {/* Logo */}
       <div className="flex items-center pl-2 flex-shrink-0">
-        <Link href="/" className="inline-flex items-center gap-2">
-        <h1 className="text-white text-xl font-medium">Brixta</h1>
-          {/* <Image
-            className="rounded-sm border border-blue-700 shadow-[0_0_10px_2px_rgba(59,130,246,0.5)]"
-            src="/brix3_img.webp"
-            alt="Brixta Logo"
-            width={58}
-            height={68}
-            priority
-          /> */}
+        <Link href="/" className="inline-flex flex-col items-start"> {/* Changed to flex-col to stack Brixta and My Coco */}
+          {/* Brixta text as the main logo */}
+          <h1 className="font-bold text-blue-600 tracking-tight text-xl sm:text-2xl md:text-3xl relative inline-flex items-baseline">
+            Brixta
+           <span className="absolute inset-0 bg-blue-500 opacity-20 rounded-md mix-blend-overlay"></span>
+          </h1>
+          {/* "by My Coco" tagline */}
+          <p className="text-white text-xs sm:text-sm normal-case opacity-80 -mt-0.5"> {/* Adjusted font size and negative margin for spacing */}
+            by <span className="font-semibold text-blue-200">My Coco</span>
+          </p>
         </Link>
       </div>
 
@@ -68,7 +68,7 @@ export function Header() {
           >
             About
           </Link>
-        
+
         </nav>
       </div>
 
